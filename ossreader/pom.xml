@@ -7,7 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>ossreader</artifactId>
-    <name>ossreader</name>
+    <name>s3reader</name>
     <packaging>jar</packaging>
 
     <dependencies>

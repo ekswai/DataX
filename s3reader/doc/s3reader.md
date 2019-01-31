@@ -1,18 +1,18 @@
-# DataX OSSReader 说明
+# DataX S3Reader 说明
 
 
 ------------
 
 ## 1 快速介绍
 
-OSSReader提供了读取OSS数据存储的能力。在底层实现上，OSSReader使用OSS官方Java SDK获取OSS数据，并转换为DataX传输协议传递给Writer。
+S3Reader提供了从Amazon S3兼容对象存储中读取数据的能力。在底层实现上，S3Reader使用S3官方Java SDK获取S3数据，并转换为DataX传输协议传递给Writer。
 
-* OSS 产品介绍, 参看[[阿里云OSS Portal](http://www.aliyun.com/product/oss)]
-* OSS Java SDK, 参看[[阿里云OSS Java SDK](http://oss.aliyuncs.com/aliyun_portal_storage/help/oss/OSS_Java_SDK_Dev_Guide_20141113.pdf)]
+* S3 产品介绍, 参看[[Amazon S3 Portal](https://aws.amazon.com/s3)]
+* S3 Java SDK, 参看[[Amazon S3 Java SDK](https://aws.amazon.com/sdk-for-java)]
 
 ## 2 功能与限制
 
-OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是无结构化数据存储，对于DataX而言，OSSReader实现上类比TxtFileReader，有诸多相似之处。目前OSSReader支持功能如下：
+S3Reader实现了从S3读取数据并转为DataX协议的功能，S3本身是无结构化数据存储，对于DataX而言，S3Reader实现上类比TxtFileReader，有诸多相似之处。目前S3Reader支持功能如下：
 
 1. 支持且仅支持读取TXT的文件，且要求TXT中shema为一张二维表。
 
@@ -30,7 +30,7 @@ OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是
 
 1. 单个Object(File)支持多线程并发读取，这里涉及到单个Object内部切分算法。二期考虑支持。
 
-2.  单个Object在压缩情况下，从技术上无法支持多线程并发读取。
+2. 单个Object在压缩情况下，从技术上无法支持多线程并发读取。
 
 
 ## 3 功能说明
@@ -45,9 +45,11 @@ OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是
         "content": [
             {
                 "reader": {
-                    "name": s3reader
+                    "name": "s3reader",
                     "parameter": {
-                        "endpoint": "http://oss.aliyuncs.com",
+                        "pathStyleAccess": "true|false",
+                        "endpoint": "http://s3.yourdomain.com",
+                        "region": "cn-north-1",
                         "accessId": "",
                         "accessKey": "",
                         "bucket": "myBucket",
@@ -83,17 +85,33 @@ OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是
 
 ### 3.2 参数说明
 
+* **pathStyleAccess**
+
+	* 描述：将bucket名作为URL上下文的S3服务访问风格，例如https://s3.yourdomain.com/$bucket。
+
+	* 必选：否 <br />
+
+	* 默认值：true <br />
+	
 * **endpoint**
 
-	* 描述：OSS Server的EndPoint地址，例如http://oss.aliyuncs.com。
+	* 描述：S3 Server的EndPoint地址，例如http://s3.yourdomain.com。
 
 	* 必选：是 <br />
 
 	* 默认值：无 <br />
 
+* **region**
+
+	* 描述：AWS区域，例如cn-north-1
+
+	* 必选：否 <br />
+
+	* 默认值：无 <br />
+	
 * **accessId**
 
-	* 描述：OSS的accessId <br />
+	* 描述：S3的accessId <br />
 
 	* 必选：是 <br />
 
@@ -101,7 +119,7 @@ OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是
 
 * **accessKey**
 
-	* 描述：OSS的accessKey  <br />
+	* 描述：S3的accessKey  <br />
 
 	* 必选：是 <br />
 
@@ -109,7 +127,7 @@ OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是
 
 * **bucket**
 
-	* 描述：OSS的bucket  <br />
+	* 描述：S3的bucket  <br />
 
 	* 必选：是 <br />
 
@@ -117,13 +135,13 @@ OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是
 
 * **object**
 
-	* 描述：OSS的object信息，注意这里可以支持填写多个Object。 <br />
+	* 描述：S3的object信息，注意这里可以支持填写多个Object。 <br />
 
-		 当指定单个OSS Object，OSSReader暂时只能使用单线程进行数据抽取。二期考虑在非压缩文件情况下针对单个Object可以进行多线程并发读取。
+		 当指定单个S3 Object，S3Reader暂时只能使用单线程进行数据抽取。二期考虑在非压缩文件情况下针对单个Object可以进行多线程并发读取。
 
-		当指定多个OSS Object，OSSReader支持使用多线程进行数据抽取。线程并发数通过通道数指定。
+		当指定多个S3 Object，S3Reader支持使用多线程进行数据抽取。线程并发数通过通道数指定。
 
-		当指定通配符，OSSReader尝试遍历出多个Object信息。例如: 指定/*代表读取bucket下游所有的Object，指定/bazhen/\*代表读取bazhen目录下游所有的Object。
+		当指定通配符，S3Reader尝试遍历出多个Object信息。例如: 指定/*代表读取bucket下游所有的Object，指定/bazhen/\*代表读取bazhen目录下游所有的Object。
 
 		**特别需要注意的是，DataX会将一个作业下同步的所有Object视作同一张数据表。用户必须自己保证所有的Object能够适配同一套schema信息。**
 
@@ -146,11 +164,11 @@ OSSReader实现了从OSS读取数据并转为DataX协议的功能，OSS本身是
 		```json
 		{
            "type": "long",
-           "index": 0    //从OSS文本第一列获取int字段
+           "index": 0    //从S3文本第一列获取int字段
         },
         {
            "type": "string",
-           "value": "alibaba"  //从OSSReader内部生成alibaba的字符串字段作为当前字段
+           "value": "alibaba"  //从S3Reader内部生成alibaba的字符串字段作为当前字段
         }
 		```
 
@@ -243,9 +261,9 @@ boolean captureRawRecord = true;
 ### 3.3 类型转换
 
 
-OSS本身不提供数据类型，该类型是DataX OSSReader定义：
+S3本身不提供数据类型，该类型是DataX S3Reader定义：
 
-| DataX 内部类型| OSS 数据类型    |
+| DataX 内部类型| S3 数据类型    |
 | -------- | -----  |
 | Long     |Long |
 | Double   |Double|
@@ -255,21 +273,14 @@ OSS本身不提供数据类型，该类型是DataX OSSReader定义：
 
 其中：
 
-* OSS Long是指OSS文本中使用整形的字符串表示形式，例如"19901219"。
-* OSS Double是指OSS文本中使用Double的字符串表示形式，例如"3.1415"。
-* OSS Boolean是指OSS文本中使用Boolean的字符串表示形式，例如"true"、"false"。不区分大小写。
-* OSS Date是指OSS文本中使用Date的字符串表示形式，例如"2014-12-31"，Date可以指定format格式。
+* S3 Long是指S3文本中使用整形的字符串表示形式，例如"19901219"。
+* S3 Double是指S3文本中使用Double的字符串表示形式，例如"3.1415"。
+* S3 Boolean是指S3文本中使用Boolean的字符串表示形式，例如"true"、"false"。不区分大小写。
+* S3 Date是指S3文本中使用Date的字符串表示形式，例如"2014-12-31"，Date可以指定format格式。
 
 ## 4 性能报告
 
-|并发数|DataX 流量|Datax 记录数|
-|--------|--------| --------|
-|1|	971.40KB/s	|10047rec/s	|
-|2| 1.81MB/s |	19181rec/s |
-|4| 3.46MB/s|	36695rec/s |
-|8| 6.57MB/s | 69289 records/s |
-|16|7.92MB/s| 83920 records/s|
-|32|7.87MB/s| 83350 records/s|
+略
 
 ## 5 约束限制
 

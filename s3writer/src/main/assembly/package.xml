@@ -13,21 +13,21 @@
                 <include>plugin.json</include>
                 <include>plugin_job_template.json</include>
             </includes>
-            <outputDirectory>plugin/reader/s3reader</outputDirectory>
+            <outputDirectory>plugin/writer/s3writer</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/</directory>
             <includes>
-                <include>s3reader-0.0.1-SNAPSHOT.jar</include>
+                <include>s3writer-0.0.1-SNAPSHOT.jar</include>
             </includes>
-            <outputDirectory>plugin/reader/s3reader</outputDirectory>
+            <outputDirectory>plugin/writer/s3writer</outputDirectory>
         </fileSet>
     </fileSets>
 
     <dependencySets>
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
-            <outputDirectory>plugin/reader/s3reader/libs</outputDirectory>
+            <outputDirectory>plugin/writer/s3writer/libs</outputDirectory>
             <scope>runtime</scope>
         </dependencySet>
     </dependencySets>

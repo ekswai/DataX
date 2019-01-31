@@ -57,6 +57,7 @@
         <module>hdfsreader</module>
         <module>streamreader</module>
         <module>ossreader</module>
+        <module>s3reader</module>
         <module>ftpreader</module>
         <module>mongodbreader</module>
         <module>rdbmsreader</module>
@@ -76,6 +77,7 @@
         <module>sqlserverwriter</module>
         <module>postgresqlwriter</module>
         <module>osswriter</module>
+        <module>s3writer</module>
         <module>mongodbwriter</module>
         <module>adswriter</module>
         <module>ocswriter</module>

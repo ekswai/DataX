@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.writer.osswriter;
+package com.alibaba.datax.plugin.writer.s3writer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import com.alibaba.datax.common.util.RetryUtil;
 import com.alibaba.datax.plugin.unstructuredstorage.writer.TextCsvWriterManager;
 import com.alibaba.datax.plugin.unstructuredstorage.writer.UnstructuredStorageWriterUtil;
 import com.alibaba.datax.plugin.unstructuredstorage.writer.UnstructuredWriter;
-import com.alibaba.datax.plugin.writer.osswriter.util.OssUtil;
+import com.alibaba.datax.plugin.writer.s3writer.util.OssUtil;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;

@@ -111,7 +111,7 @@
             <outputDirectory>datax</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>ossreader/target/datax/</directory>
+            <directory>s3reader/target/datax/</directory>
             <includes>
                 <include>**/*.*</include>
             </includes>

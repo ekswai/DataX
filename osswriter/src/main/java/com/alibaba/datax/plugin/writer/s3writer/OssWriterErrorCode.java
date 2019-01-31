@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.writer.osswriter;
+package com.alibaba.datax.plugin.writer.s3writer;
 
 import com.alibaba.datax.common.spi.ErrorCode;
 
