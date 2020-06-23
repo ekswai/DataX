@@ -11,13 +11,11 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 public class SubCommonRdbmsWriter extends CommonRdbmsWriter {
-    static {
-        DBUtil.loadDriverClass("writer", "rdbms");
-    }
 
     public static class Job extends CommonRdbmsWriter.Job {
         public Job(DataBaseType dataBaseType) {
             super(dataBaseType);
+            DBUtil.loadDriverClass("writer", "rdbms");
         }
     }
 

@@ -352,8 +352,8 @@ public class DFSUtil {
                 }
                 reader.close();
             } catch (Exception e) {
-                String message = String.format("从orcfile文件路径[%s]中读取数据发生异常，请联系系统管理员。"
-                        , sourceOrcFilePath);
+                String message = String.format("从orcfile文件路径[%s]中读取数据发生异常，请联系系统管理员。cause: %s"
+                        , sourceOrcFilePath, e.toString() + " " + e.getMessage());
                 LOG.error(message);
                 throw DataXException.asDataXException(HdfsReaderErrorCode.READ_FILE_ERROR, message);
             }
