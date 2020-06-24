@@ -26,9 +26,12 @@ import org.slf4j.LoggerFactory;
 public class SubCommonRdbmsReader extends CommonRdbmsReader {
 
     public static class Job extends CommonRdbmsReader.Job {
+        static {
+            DBUtil.loadDriverClass("reader", "rdbms");
+        }
+
         public Job(DataBaseType dataBaseType) {
             super(dataBaseType);
-            DBUtil.loadDriverClass("reader", "rdbms");
         }
     }
 

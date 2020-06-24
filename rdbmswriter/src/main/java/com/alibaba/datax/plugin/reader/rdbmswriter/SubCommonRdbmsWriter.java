@@ -13,9 +13,12 @@ import java.sql.Types;
 public class SubCommonRdbmsWriter extends CommonRdbmsWriter {
 
     public static class Job extends CommonRdbmsWriter.Job {
+        static {
+            DBUtil.loadDriverClass("writer", "rdbms");
+        }
+
         public Job(DataBaseType dataBaseType) {
             super(dataBaseType);
-            DBUtil.loadDriverClass("writer", "rdbms");
         }
     }
 
